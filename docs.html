@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark light">
+<meta name="description" content="starAItable 星智台 · 官方文档中心 —— 管理员指南、项目管理员指南、AI 本地部署指南、积分系统指南、用户指南。">
+<title>文档中心 · starAItable 星智台</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232563EB'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle' fill='white' font-family='Arial'%3E★%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0d1117; --panel: #161b22; --panel2: #1c2430; --border: #2a3341;
+    --text: #e6edf3; --muted: #8b96a5; --accent: #3b82f6; --accent2: #4f8ff7; --success: #3fb950;
+    --font-sans: "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: radial-gradient(1000px 400px at 90% -10%, rgba(59,130,246,.1), transparent 60%), var(--bg);
+    color: var(--text); font: 14px/1.65 var(--font-sans); padding: 36px 20px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; }
+  .top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+  .mark {
+    width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; font-weight: 800; font-size: 16px;
+  }
+  .brand b { font-size: 16px; }
+  .back { display: inline-block; margin-bottom: 14px; color: var(--muted); text-decoration: none; font-size: 13px; }
+  .back:hover { color: var(--text); }
+  h1 { font-size: 26px; margin-bottom: 4px; }
+  .muted { color: var(--muted); font-size: 12.5px; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 22px; margin-bottom: 16px; }
+  .card:hover { border-color: rgba(59,130,246,.4); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 20px; }
+  .doc { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; text-decoration: none; color: var(--text); transition: border-color .15s, transform .15s; }
+  .doc:hover { border-color: rgba(59,130,246,.5); transform: translateY(-2px); }
+  .doc .tag { display: inline-block; font-size: 10.5px; border: 1px solid var(--border); border-radius: 999px; padding: 1px 9px; color: var(--accent); margin-bottom: 10px; }
+  .doc h3 { font-size: 15px; margin-bottom: 6px; }
+  .doc p { font-size: 12.5px; color: var(--muted); }
+  .doc .meta { margin-top: 12px; font-size: 11.5px; color: var(--muted2, #6a7484); font-family: var(--font-mono); }
+  .note { border-left: 3px solid var(--success); padding: 10px 14px; background: rgba(63,185,80,.07); border-radius: 6px; font-size: 12.5px; color: #9dd8a8; margin-top: 16px; }
+  code { background: var(--panel2); border: 1px solid var(--border); border-radius: 5px; padding: 1px 6px; font-size: 12px; font-family: var(--font-mono); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/">← 返回首页</a>
+  <div class="top">
+    <div>
+      <h1>📚 文档中心</h1>
+      <div class="muted">starAItable 星智台 · 官方操作指南（v1.0 · 2026-10-06）</div>
+    </div>
+    <a class="brand" href="/"><span class="mark">★</span><b>starAItable</b></a>
+  </div>
+
+  <div class="card">
+    <div class="muted">本中心汇集 starAItable 全角色操作指南，覆盖系统管理、项目管理、AI 本地部署、积分体系与日常使用。所有文档遵循统一格式规范，含章节结构、操作步骤、参数说明与注意事项。</div>
+  </div>
+
+  <div class="grid">
+    <a class="doc" href="/docs/管理员操作指南.md">
+      <span class="tag">系统管理员</span>
+      <h3>管理员操作指南</h3>
+      <p>用户管理、角色权限、审批审计、系统配置、数据备份恢复、积分与 AI 运行时管理。</p>
+      <div class="meta">docs/管理员操作指南.md</div>
+    </a>
+
+    <a class="doc" href="/docs/项目管理员操作指南.md">
+      <span class="tag">项目管理员</span>
+      <h3>项目管理员操作指南</h3>
+      <p>项目全生命周期：创建、成员、任务、阶段进度、审批流、模板、归档与最佳实践。</p>
+      <div class="meta">docs/项目管理员操作指南.md</div>
+    </a>
+
+    <a class="doc" href="/docs/AI本地部署操作指南.md">
+      <span class="tag">运维 / 实施</span>
+      <h3>AI 本地部署操作指南</h3>
+      <p>环境要求、依赖安装、部署流程、参数设置、性能优化、系统维护与问题排查。</p>
+      <div class="meta">docs/AI本地部署操作指南.md</div>
+    </a>
+
+    <a class="doc" href="/docs/积分系统指南.md">
+      <span class="tag">全部用户</span>
+      <h3>积分系统指南</h3>
+      <p>双轨积分设计规则、获取与消耗、等级晋升、算力兑换、管理审核与查询操作。</p>
+      <div class="meta">docs/积分系统指南.md</div>
+    </a>
+
+    <a class="doc" href="/docs/用户指南.md">
+      <span class="tag">普通用户</span>
+      <h3>用户指南</h3>
+      <p>账号注册登录、界面导航、功能模块、常见操作、个性化设置与 FAQ。</p>
+      <div class="meta">docs/用户指南.md</div>
+    </a>
+  </div>
+
+  <div class="note">
+    💡 <b>提示</b>：文档以 Markdown 提供，可在浏览器直接阅读，或下载后导入任意 Markdown 编辑器。配套更多技术文档见 <code>docs/</code> 目录。
+  </div>
+
+  <div class="card" style="margin-top:20px">
+    <h2 style="font-size:15px;margin-bottom:12px">📄 配套指导文档</h2>
+    <div class="muted" style="margin-bottom:12px">面向日常使用与运维的更多参考文档：</div>
+    <div class="grid">
+      <a class="doc" href="/docs/使用说明.md">
+        <span class="tag">日常使用</span>
+        <h3>使用说明</h3>
+        <p>工作台（Web UI）、物理可视化与 CLI 的日常使用。</p>
+        <div class="meta">docs/使用说明.md</div>
+      </a>
+      <a class="doc" href="/docs/安装指南.md">
+        <span class="tag">安装</span>
+        <h3>安装指南</h3>
+        <p>获取、构建并运行 starAItable（服务端 + 前端 + CLI）。</p>
+        <div class="meta">docs/安装指南.md</div>
+      </a>
+      <a class="doc" href="/docs/终端用户手册.md">
+        <span class="tag">CLI 用户</span>
+        <h3>终端用户手册</h3>
+        <p>CLI 智能补全、主题定制、性能优化、别名/历史/分屏。</p>
+        <div class="meta">docs/终端用户手册.md</div>
+      </a>
+      <a class="doc" href="/docs/常见问题.md">
+        <span class="tag">FAQ</span>
+        <h3>常见问题</h3>
+        <p>高频问题速查，快速定位常见故障。</p>
+        <div class="meta">docs/常见问题.md</div>
+      </a>
+      <a class="doc" href="/docs/内置Ollama运行时.md">
+        <span class="tag">AI 部署</span>
+        <h3>内置 Ollama 运行时</h3>
+        <p>自举下载/拉起/管理本地模型运行时的完整说明。</p>
+        <div class="meta">docs/内置Ollama运行时.md</div>
+      </a>
+      <a class="doc" href="/docs/物理模拟.md">
+        <span class="tag">模块</span>
+        <h3>物理模拟</h3>
+        <p>物理内核架构、技能接口与扩展开发。</p>
+        <div class="meta">docs/物理模拟.md</div>
+      </a>
+      <a class="doc" href="/docs/神经网络模拟.md">
+        <span class="tag">模块</span>
+        <h3>神经网络模拟</h3>
+        <p>神经网络可视化与模型加载/训练/优化监控。</p>
+        <div class="meta">docs/神经网络模拟.md</div>
+      </a>
+      <a class="doc" href="/docs/权限管理模块-用户手册.md">
+        <span class="tag">权限</span>
+        <h3>权限管理系统 · 用户手册</h3>
+        <p>角色说明、权限分配、审批流、MFA 与常见任务。</p>
+        <div class="meta">docs/权限管理模块-用户手册.md</div>
+      </a>
+    </div>
+  </div>
+</div>
+</body>
+</html>
