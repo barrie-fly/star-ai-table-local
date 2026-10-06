@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark light">
+<meta name="description" content="starAItable 客户端下载 —— Windows 桌面客户端，服务端 + 客户端双软件架构的 AI 应用工作台。">
+<title>下载客户端 · starAItable 智星台</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232563EB'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle' fill='white' font-family='Arial'%3E★%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0d1117; --panel: #161b22; --panel2: #1c2430; --border: #2a3341;
+    --text: #e6edf3; --muted: #8b96a5; --accent: #3b82f6; --accent2: #4f8ff7; --warn: #e0a458; --danger: #f85149;
+    --font-sans: "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background:
+      radial-gradient(1000px 400px at 90% -10%, rgba(59,130,246,.1), transparent 60%),
+      var(--bg);
+    color: var(--text); font: 14px/1.65 var(--font-sans); padding: 36px 20px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 920px; margin: 0 auto; }
+  .top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+  .mark {
+    width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; font-weight: 800; font-size: 16px;
+  }
+  .brand b { font-size: 16px; }
+  h1 { font-size: 24px; margin-bottom: 4px; }
+  .muted { color: var(--muted); font-size: 12.5px; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 22px; margin-bottom: 16px; }
+  .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .row.between { justify-content: space-between; }
+  h2 { font-size: 15px; margin-bottom: 12px; }
+  .tag { display: inline-block; padding: 2px 10px; border-radius: 999px; border: 1px solid var(--border); font-size: 11.5px; color: var(--muted); }
+  .tag.on { border-color: var(--accent); color: var(--accent); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 6px; }
+  th, td { text-align: left; padding: 11px 8px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 500; font-size: 12px; }
+  .dl {
+    display: inline-block; padding: 8px 18px; border-radius: 9px; background: var(--accent); color: #fff;
+    font-weight: 600; text-decoration: none; font-size: 12.5px; border: 1px solid var(--accent);
+    transition: filter .15s;
+  }
+  .dl:hover { filter: brightness(1.1); }
+  .dl.sec { background: transparent; border-color: var(--border); color: var(--text); font-weight: 500; }
+  code { background: var(--panel2); border: 1px solid var(--border); border-radius: 5px; padding: 1px 6px; font-size: 12px; font-family: var(--font-mono); }
+  .steps li { margin: 6px 0 6px 18px; }
+  .bar { height: 8px; background: var(--panel2); border-radius: 999px; overflow: hidden; margin: 8px 0 4px; }
+  .bar > div { height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+  .err { color: var(--danger); font-size: 12px; }
+  .hint { border-left: 3px solid var(--warn); padding: 8px 12px; background: rgba(224,164,88,.07); border-radius: 6px; font-size: 12.5px; color: #e8c79a; }
+  .back { display: inline-block; margin-bottom: 14px; color: var(--muted); text-decoration: none; font-size: 13px; }
+  .back:hover { color: var(--text); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/">← 返回首页</a>
+  <div class="top">
+    <div>
+      <h1>下载桌面客户端</h1>
+      <div class="muted" id="meta">正在读取发布清单…</div>
+    </div>
+    <a class="brand" href="/"><span class="mark">★</span><b>starAItable</b></a>
+  </div>
+
+  <div class="card">
+    <div class="row between">
+      <h2 style="margin:0">选择你的平台</h2>
+      <span class="tag" id="detect">未识别</span>
+    </div>
+    <div class="muted" id="detectHint" style="margin-top:6px">页面已按你的系统自动排序推荐安装包。</div>
+  </div>
+
+  <div class="card">
+    <h2>安装包</h2>
+    <table id="files">
+      <tr><th>平台</th><th>格式</th><th>大小</th><th>SHA-256</th><th></th></tr>
+    </table>
+    <div class="err" id="err"></div>
+  </div>
+
+  <div class="card" id="webDl" style="display:none">
+    <div class="row between">
+      <h2 style="margin:0">浏览器内置下载器</h2>
+      <button class="dl sec" id="btnPause" style="display:none">暂停</button>
+    </div>
+    <div class="muted" style="margin-top:8px">
+      浏览器环境为流式下载（无断点续传），下载完成后请自行比对 SHA-256。
+      桌面客户端内提供更强的下载器（断点续传 + SHA-256 校验）。
+    </div>
+    <div class="bar"><div id="webBar"></div></div>
+    <div class="muted" id="webStatus"></div>
+  </div>
+
+  <div class="card">
+    <h2>安装与说明</h2>
+    <ul class="steps">
+      <li><b>Windows</b>：下载 <code>star-ai-table-&lt;版本&gt;-win-x64.zip</code>，解压后运行 <code>StarAI.Client\StarAI.Client.exe</code>。</li>
+      <li><b>首次登录</b>：需要可用的服务端地址（默认 <code>http://127.0.0.1:5100</code>），账号由服务端管理员创建或注册。</li>
+      <li><b>运行环境</b>：需要 <b>WebView2 Runtime</b>（Windows 10/11 通常已预装）；.NET 运行时已随包内置。</li>
+      <li><b>服务端部署</b>：解压包内 <code>StarAI.Server\StarAI.Server.exe</code> 即为独立服务端，生产环境请设置 <code>JWT_SECRET</code> 环境变量。</li>
+    </ul>
+    <div class="hint" style="margin-top:12px">
+      ZIP 包含 <code>SHA256SUMS.txt</code> 校验文件；解压前建议先校验完整性。
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const fmtSize = (n) => {
+  if (!n) return '-';
+  const u = ['B','KB','MB','GB']; let i = 0, v = n;
+  while (v >= 1024 && i < u.length - 1) { v /= 1024; i++; }
+  return v.toFixed(1) + ' ' + u[i];
+};
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function detectPlatform() {
+  const ua = navigator.userAgent;
+  const p = navigator.platform || '';
+  if (/Win/i.test(p) || /Windows/i.test(ua)) return 'win';
+  return 'unknown';
+}
+
+(async () => {
+  const plat = detectPlatform();
+  $('detect').textContent = { win: 'Windows', unknown: '未知系统' }[plat];
+  $('detectHint').textContent = plat === 'unknown'
+    ? '未能识别系统，请手动选择对应安装包。'
+    : '已识别为 Windows，安装包已置顶。';
+
+  let manifest;
+  try {
+    manifest = await (await fetch('download-manifest.json', { cache: 'no-store' })).json();
+  } catch (e) {
+    $('meta').textContent = '发布清单读取失败';
+    $('err').textContent = '无法加载 download-manifest.json：' + e.message;
+    return;
+  }
+  $('meta').innerHTML = `最新版本 <b>v${esc(manifest.version)}</b> · 发布于 ${esc(manifest.releasedAt || '-')} · 共 ${manifest.files.length} 个安装包`;
+
+  const files = [...manifest.files].sort((a, b) => {
+    const score = (f) => (f.os === plat ? 0 : 1) + (f.recommended ? -0.5 : 0);
+    return score(a) - score(b);
+  });
+  $('files').innerHTML = '<tr><th>平台</th><th>格式</th><th>大小</th><th>SHA-256</th><th></th></tr>' +
+    files.map((f, i) => `<tr>
+      <td>${esc(f.osLabel || f.os)} ${(f.os === plat) ? '<span class="tag on">当前系统</span>' : ''} ${f.recommended ? '<span class="tag">推荐</span>' : ''}</td>
+      <td>${esc(f.kind)}</td>
+      <td class="muted">${fmtSize(f.size)}</td>
+      <td class="muted" title="${esc(f.sha256)}">${esc((f.sha256 || '').slice(0, 16))}…</td>
+      <td><a class="dl" href="${esc(f.url)}" data-url="${esc(f.url)}" data-name="${esc(f.name)}" data-sha="${esc(f.sha256 || '')}">下载</a></td>
+    </tr>`).join('');
+
+  document.querySelectorAll('a.dl').forEach((a) => a.addEventListener('click', (e) => {
+    e.preventDefault();
+    browserDownload(a.dataset.url, a.dataset.name, a.dataset.sha);
+  }));
+})();
+
+let currentController = null;
+async function browserDownload(url, name, sha) {
+  $('webDl').style.display = '';
+  $('webStatus').textContent = `准备下载 ${name}…`;
+  $('err').textContent = '';
+  currentController = new AbortController();
+  try {
+    const res = await fetch(url, { signal: currentController.signal });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const total = parseInt(res.headers.get('content-length') || '0', 10);
+    const reader = res.body.getReader();
+    const chunks = [];
+    let received = 0, last = performance.now(), lastBytes = 0;
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      chunks.push(value);
+      received += value.length;
+      const now = performance.now();
+      if (now - last >= 250) {
+        const bps = (received - lastBytes) / ((now - last) / 1000);
+        last = now; lastBytes = received;
+        $('webBar').style.width = total ? (received / total * 100).toFixed(1) + '%' : '0%';
+        $('webStatus').textContent = `${fmtSize(received)} / ${total ? fmtSize(total) : '未知'} · ${fmtSize(bps)}/s · 剩余 ${total && bps > 0 ? Math.round((total - received) / bps) + ' 秒' : '-'}`;
+      }
+    }
+    const blob = new Blob(chunks);
+    $('webBar').style.width = '100%';
+    $('webStatus').textContent = `下载完成（${fmtSize(received)}）${sha ? ' · 请比对 SHA-256：' + sha : ''}`;
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  } catch (e) {
+    if (e.name === 'AbortError') { $('webStatus').textContent = '已取消'; return; }
+    $('err').textContent = '下载失败：' + e.message + '（可改用桌面客户端下载器）';
+  }
+}
+$('btnPause').onclick = () => currentController?.abort();
+</script>
+</body>
+</html>
