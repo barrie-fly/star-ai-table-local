@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark light">
+<meta name="description" content="starAItable —— 智星台：服务端 + 客户端双软件架构的 AI 应用工作台。服务端负责用户/管理/统计，客户端承载全部业务模块并本地运行。">
+<title>starAItable · 智星台</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232563EB'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle' fill='white' font-family='Arial'%3E★%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0d1117;
+    --bg2: #10161f;
+    --surface: #161b22;
+    --surface2: #1c2430;
+    --border: #2a3341;
+    --fg: #e6edf3;
+    --muted: #8b96a5;
+    --accent: #3b82f6;
+    --accent2: #4f8ff7;
+    --accent-on: #ffffff;
+    --success: #3fb950;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --font-sans: "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+    --font-mono: "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-sans);
+    background:
+      radial-gradient(1200px 500px at 80% -10%, rgba(59,130,246,.12), transparent 60%),
+      radial-gradient(800px 400px at 0% 20%, rgba(63,185,80,.06), transparent 60%),
+      var(--bg);
+    color: var(--fg);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* 导航 */
+  header {
+    position: sticky; top: 0; z-index: 10;
+    backdrop-filter: blur(12px);
+    background: rgba(13,17,23,.8);
+    border-bottom: 1px solid var(--border);
+  }
+  nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--fg); }
+  .mark {
+    width: 36px; height: 36px; border-radius: 10px; flex: none; display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; font-weight: 800; font-size: 17px;
+    box-shadow: 0 4px 14px rgba(59,130,246,.35);
+  }
+  .brand b { font-size: 17px; font-weight: 600; letter-spacing: .3px; }
+  .brand .ver { font-size: 10px; color: var(--accent); border: 1px solid var(--border); border-radius: 999px; padding: 0 8px; line-height: 17px; font-family: var(--font-mono); }
+  nav .links { display: flex; align-items: center; gap: 8px; }
+  nav .links a { color: var(--muted); text-decoration: none; font-size: 13.5px; padding: 7px 13px; border-radius: 8px; transition: color .15s, background .15s; }
+  nav .links a:hover { color: var(--fg); background: var(--surface2); }
+  .btn {
+    display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: 10px;
+    font-size: 13.5px; font-weight: 600; text-decoration: none; cursor: pointer;
+    border: 1px solid var(--accent); background: var(--accent); color: var(--accent-on);
+    transition: filter .15s, transform .1s;
+  }
+  .btn:hover { filter: brightness(1.1); }
+  .btn:active { transform: translateY(1px); }
+  .btn.ghost { background: transparent; border-color: var(--border); color: var(--fg); }
+  .btn.ghost:hover { background: var(--surface2); }
+
+  /* Hero */
+  .hero { padding: 96px 0 72px; text-align: center; }
+  .hero .badge {
+    display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--success);
+    border: 1px solid rgba(63,185,80,.3); background: rgba(63,185,80,.08);
+    padding: 4px 13px; border-radius: 999px; margin-bottom: 20px;
+  }
+  .hero h1 { font-size: clamp(34px, 5vw, 54px); font-weight: 700; letter-spacing: -.5px; line-height: 1.2; margin-bottom: 18px; }
+  .hero h1 .grad {
+    background: linear-gradient(90deg, var(--accent), var(--accent2), #8b5cf6);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero p.lead { max-width: 680px; margin: 0 auto 34px; color: var(--muted); font-size: 16px; }
+  .hero .actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .hero .meta { margin-top: 40px; display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; color: var(--muted); font-size: 12.5px; }
+  .hero .meta b { color: var(--fg); font-weight: 600; }
+
+  /* 架构卡片 */
+  .arch { padding: 40px 0 24px; }
+  .arch .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 28px; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 26px; transition: border-color .2s, transform .2s;
+  }
+  .card:hover { border-color: rgba(59,130,246,.4); transform: translateY(-2px); }
+  .card .icon { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; font-size: 20px; margin-bottom: 16px; background: var(--surface2); }
+  .card.server .icon { background: rgba(59,130,246,.12); }
+  .card.client .icon { background: rgba(139,92,246,.12); }
+  .card h3 { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
+  .card .tag { display: inline-block; font-size: 10.5px; border: 1px solid var(--border); border-radius: 999px; padding: 1px 9px; color: var(--muted); margin-bottom: 12px; }
+  .card ul { list-style: none; }
+  .card ul li { position: relative; padding-left: 20px; font-size: 13.5px; color: var(--muted); margin: 7px 0; }
+  .card ul li::before { content: "✓"; position: absolute; left: 0; color: var(--success); font-weight: 700; }
+  .section-title { text-align: center; margin: 60px 0 8px; }
+  .section-title h2 { font-size: 26px; font-weight: 700; }
+  .section-title p { color: var(--muted); font-size: 14px; margin-top: 6px; }
+
+  /* 特性 */
+  .features .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 28px; }
+  .feature { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px; }
+  .feature h4 { font-size: 14.5px; font-weight: 600; margin-bottom: 6px; }
+  .feature p { font-size: 12.5px; color: var(--muted); }
+
+  /* CTA */
+  .cta { text-align: center; padding: 72px 0; margin-top: 40px; }
+  .cta .box {
+    background: linear-gradient(135deg, rgba(59,130,246,.1), rgba(139,92,246,.08));
+    border: 1px solid rgba(59,130,246,.25); border-radius: var(--radius-lg); padding: 48px 24px;
+  }
+  .cta h2 { font-size: 26px; margin-bottom: 10px; }
+  .cta p { color: var(--muted); font-size: 14px; margin-bottom: 26px; }
+
+  footer { border-top: 1px solid var(--border); padding: 28px 0 40px; margin-top: 40px; }
+  footer .wrap { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; color: var(--muted); font-size: 12.5px; }
+  footer code { font-family: var(--font-mono); font-size: 11.5px; background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; padding: 2px 7px; }
+
+  @media (max-width: 640px) {
+    .hero { padding: 64px 0 48px; }
+    nav .links a:not(.btn) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <a class="brand" href="/">
+      <span class="mark">★</span>
+      <b>starAItable</b>
+      <span class="ver">智星台</span>
+    </a>
+    <div class="links">
+      <a href="#arch">架构</a>
+      <a href="#features">特性</a>
+      <a class="btn ghost" href="/download.html">下载客户端</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <span class="badge">● 服务端 + 客户端双软件架构</span>
+    <h1>把 AI 应用工作台<br><span class="grad">装进你的电脑</span></h1>
+    <p class="lead">
+      starAItable 是一个面向 AI 应用开发与协作的工作台。
+      服务端负责账号、权限与统计；客户端承载项目管理、AI 创作、代码协同、PM 流程等全部业务模块，
+      登录后业务本地运行，数据自主可控。
+    </p>
+    <div class="actions">
+      <a class="btn" href="/download.html">⬇ 下载客户端</a>
+      <a class="btn ghost" href="#arch">了解架构</a>
+    </div>
+    <div class="meta">
+      <span><b>2</b> 个独立软件</span>
+      <span><b>7+</b> 大业务域</span>
+      <span><b>69</b> 个业务控制器</span>
+      <span><b>100%</b> 本地运行</span>
+    </div>
+  </div>
+</section>
+
+<section class="arch" id="arch">
+  <div class="wrap">
+    <div class="section-title">
+      <h2>双软件架构</h2>
+      <p>职责严格分离：服务端管账号与全局，客户端管业务与数据</p>
+    </div>
+    <div class="grid">
+      <div class="card server">
+        <div class="icon">🖥️</div>
+        <h3>StarAI Server · 服务端</h3>
+        <span class="tag">部署在服务器 / 终端</span>
+        <ul>
+          <li>用户系统：注册 / 登录 / 令牌刷新 / 资料</li>
+          <li>管理系统：用户、角色、权限、通知、反馈、安全</li>
+          <li>统计系统：访问统计 / 运营看板（仅管理员可见）</li>
+          <li>AI 代理网关：云端模型 Key 集中管理与审计</li>
+        </ul>
+      </div>
+      <div class="card client">
+        <div class="icon">💻</div>
+        <h3>StarAI Client · 客户端</h3>
+        <span class="tag">Windows 桌面应用</span>
+        <ul>
+          <li>WPF 原生壳 + WebView2 承载业务前端</li>
+          <li>项目管理、AI 创作台、代码库、PM 流程等全部业务</li>
+          <li>本地 SQLite 数据目录，业务数据自主可控</li>
+          <li>本地 Ollama 直连通道，离线也可用 AI</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="wrap">
+    <div class="section-title">
+      <h2>核心特性</h2>
+      <p>为 AI 应用开发与团队协作而设计</p>
+    </div>
+    <div class="grid">
+      <div class="feature"><h4>🔐 统一登录</h4><p>仅通过服务端线上登录，令牌本地存储，会话可轮换刷新。</p></div>
+      <div class="feature"><h4>🗂️ 全业务模块</h4><p>项目、AI、创作台、代码、PM、用户辅助、企业组织七大业务域。</p></div>
+      <div class="feature"><h4>🤖 本地 AI</h4><p>内置 Ollama 运行时，模型下载与推理本地完成，数据不出设备。</p></div>
+      <div class="feature"><h4>📊 管理员统计</h4><p>服务端统计系统仅管理员可见，运营数据一目了然。</p></div>
+      <div class="feature"><h4>🎨 统一设计系统</h4><p>深/浅主题 Token、250+ 统一图标库、一致的交互动效。</p></div>
+      <div class="feature"><h4>🔒 权限分离</h4><p>服务端与客户端权限严格隔离，业务端点仅在客户端暴露。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <div class="box">
+      <h2>立即开始使用</h2>
+      <p>下载 Windows 客户端，或部署独立服务端。</p>
+      <a class="btn" href="/download.html">⬇ 下载客户端</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 starAItable · 智星台</span>
+    <span>最新版本 <code id="ver">读取中…</code></span>
+  </div>
+</footer>
+
+<script>
+// 从下载清单读取最新版本号显示在页脚
+(async () => {
+  try {
+    const r = await fetch('/download-manifest.json', { cache: 'no-store' });
+    if (r.ok) {
+      const m = await r.json();
+      const el = document.getElementById('ver');
+      if (el && m.version) el.textContent = 'v' + m.version;
+    }
+  } catch (e) { /* 忽略 */ }
+})();
+</script>
+</body>
+</html>
