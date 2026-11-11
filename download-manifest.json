@@ -1,16 +1,16 @@
 {
-  "version": "2.2.12",
-  "releasedAt": "2026-11-10",
-  "notes": "starAItable 2.2.12 自包含分发包（.NET 10，无需运行时），内含 LocalServe.Api + LocalServe.Cli + AgentCluster.Node + AgentCluster.ControlPlane + AiService.Api + AiService.Cli + LocalServe.Editor；断点续传 + SHA-256 完整性校验。",
+  "version": "2.2.13",
+  "releasedAt": "2026-11-11",
+  "notes": "starAItable 2.2.13 自包含分发包（.NET 10，无需运行时），内含 LocalServe.Api + LocalServe.Cli + AgentCluster.Node + AgentCluster.ControlPlane + AiService.Api + AiService.Cli + LocalServe.Editor；断点续传 + SHA-256 完整性校验。",
   "files": [
     {
       "os": "win",
       "osLabel": "Windows",
       "kind": "自包含分发包 (zip, x64)",
-      "name": "star-ai-table-2.2.12-win-x64.zip",
-      "size": 204995983,
-      "sha256": "3ea7662e3cfdc911dd1b560c841ae037d31ff9a8750ab270a8fad5372ce22421",
-      "url": "https://github.com/Barrie-fly/star-ai-table-local/releases/download/v2.2.12/star-ai-table-2.2.12-win-x64.zip",
+      "name": "star-ai-table-2.2.13-win-x64.zip",
+      "size": 208053504,
+      "sha256": "e6b161b3d351f36edd2ae88d63cbc738fd7cc31eeec9e53b637cf9ccd9548d32",
+      "url": "https://github.com/Barrie-fly/star-ai-table-local/releases/download/v2.2.13/star-ai-table-2.2.13-win-x64.zip",
       "recommended": true
     }
   ]
